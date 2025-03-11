@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 const Checkout = message => {
     const location = useLocation();
@@ -10,42 +11,96 @@ const Checkout = message => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
-    const [id, setId] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const total_price = quantity * 300;
         const formData= new FormData();
         formData.append('name', name);
         formData.append('phone', phone);
         formData.append('address', address);
         formData.append('email', email);
+        formData.append('quantity', quantity);
+        formData.append('total_price', total_price);
 
         try {
-            const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
-                method: 'POST',
-                body: formData
+            const response = await fetch('http://localhost/zeroday/zeroday/get_email?email='+email, {
+                method: 'get'
             });
-
             const data = await response.json();
-            console.log(data);
-            if (!data.resultado) {
-                alert(data.mensaje);
-                setName('');
-                setPhone('');
-                setAddress('');
-                setEmail('');
-                setId('');
-            } else {
-                setId(data.id);
-                alert(`Orden confirmada con ${quantity} items para ${formData.name}`);
-                navigate('/checkout', { state: { quantity, id } });
+
+            console.log(email)
+            const isDuplicated = data.order[0].is_verified;
+
+            if (data.resultado) {
+                Swal.fire({
+                    title: "El correo registrado ya existe",
+                    text: "¿Deseas actualizar tus datos?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, actualizar",
+                    cancelButtonText: "Mantener datos anteriores",
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        formData.append('isDuplicated', 1);
+                        console.log('hoola')
+                    } else {
+                        formData.append('isDuplicated', 2);
+                    }
+                    try{
+                        const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data1 = await response.json();
+                        console.log(data1)
+                        if (!data1.resultado) {
+                            console.log(data1)
+                        } else {
+                            Swal.fire("Enviado", "Tu compra se ha procesado correctamente", "success");
+                            const orderId = data.orderId
+                            console.log("aaaaaa");
+                            console.log(data.orderId);
+                            console.log(orderId);
+                            navigate('/payment', {state: {quantity, orderId}});
+                        }
+
+                    } catch (error) {
+                    alert('Error al realizar la solicitud');
+                    console.error('Error al realizar la solicitud:', error);
+                }
+                });
+            }else{
+                try {
+                    const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    if (!data.resultado) {
+                        alert(data.mensaje);
+                    } else {
+                        const orderId=data.orderId
+                        console.log("aaaaaa");
+                        console.log(data.orderId);
+                        console.log(orderId);
+                        alert(`Orden confirmada con ${quantity} items para ${data.id}`);
+                        navigate('/payment', { state: { quantity, orderId } });
+                    }
+
+                } catch (error) {
+                    alert('Error al realizar la solicitud');
+                    console.error('Error al realizar la solicitud:', error);
+                }
             }
 
         } catch (error) {
             alert('Error al realizar la solicitud');
             console.error('Error al realizar la solicitud:', error);
         }
+
     };
 
     return (
