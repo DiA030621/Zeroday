@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
@@ -68,7 +67,6 @@ const StripeForm = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3 p-3 border rounded">
                             <CardElement
-                                options={{ hidePostalCode: true }}
                                 className="form-control p-2"
                             />
 

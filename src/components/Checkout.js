@@ -11,9 +11,13 @@ const Checkout = message => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Simula una espera
+        setLoading(false);
 
         const total_price = quantity * 300;
         const formData= new FormData();
@@ -29,12 +33,9 @@ const Checkout = message => {
                 method: 'get'
             });
             const data = await response.json();
-
-            console.log(email)
-            const isDuplicated = data.order[0].is_verified;
-
+            console.log(data);
             if (data.resultado) {
-                Swal.fire({
+                await Swal.fire({
                     title: "El correo registrado ya existe",
                     text: "¿Deseas actualizar tus datos?",
                     icon: "question",
@@ -44,56 +45,32 @@ const Checkout = message => {
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         formData.append('isDuplicated', 1);
-                        console.log('hoola')
                     } else {
                         formData.append('isDuplicated', 2);
                     }
-                    try{
-                        const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
-                            method: 'POST',
-                            body: formData
-                        });
-                        const data1 = await response.json();
-                        console.log(data1)
-                        if (!data1.resultado) {
-                            console.log(data1)
-                        } else {
-                            Swal.fire("Enviado", "Tu compra se ha procesado correctamente", "success");
-                            const orderId = data.orderId
-                            console.log("aaaaaa");
-                            console.log(data.orderId);
-                            console.log(orderId);
-                            navigate('/payment', {state: {quantity, orderId}});
-                        }
-
-                    } catch (error) {
-                    alert('Error al realizar la solicitud');
-                    console.error('Error al realizar la solicitud:', error);
-                }
                 });
             }else{
-                try {
-                    const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
-                        method: 'POST',
-                        body: formData
-                    });
+                formData.append('isDuplicated', 0);
+            }
+            try {
+                console.log(formData);
+                const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
+                    method: 'POST',
+                    body: formData
+                });
 
-                    const data = await response.json();
-                    if (!data.resultado) {
-                        alert(data.mensaje);
-                    } else {
-                        const orderId=data.orderId
-                        console.log("aaaaaa");
-                        console.log(data.orderId);
-                        console.log(orderId);
-                        alert(`Orden confirmada con ${quantity} items para ${data.id}`);
-                        navigate('/payment', { state: { quantity, orderId } });
-                    }
-
-                } catch (error) {
-                    alert('Error al realizar la solicitud');
-                    console.error('Error al realizar la solicitud:', error);
+                const data1 = await response.json();
+                if (!data1.resultado) {
+                    alert('HOLA');
+                } else {
+                    const orderId=data1.orderId
+                    alert(`Orden confirmada con ${quantity} items para ${orderId}`);
+                    navigate('/Verification', { state: { quantity, orderId, email } });
                 }
+
+            } catch (error) {
+                alert('Error al realizar la solicitud');
+                console.error('Error al realizar la solicitud:', error);
             }
 
         } catch (error) {
@@ -126,8 +103,8 @@ const Checkout = message => {
                             <label className="form-label">Correo Electrónico</label>
                             <input type="email" name="email" className="form-control" onChange={(e) => setEmail(e.target.value)} required />
                         </div>
-                        <button type="submit" className="btn btn-success w-100 mt-3">
-                            Confirmar Compra
+                        <button type="submit" className="btn btn-success w-100 mt-3" disabled={loading}>
+                            {loading ? "Cargando..." : "Confirmar Compra"}
                         </button>
                     </form>
                 </div>
