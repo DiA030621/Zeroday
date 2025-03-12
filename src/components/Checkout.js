@@ -33,8 +33,8 @@ const Checkout = message => {
                 method: 'get'
             });
             const data = await response.json();
-            console.log(data);
-            if (data.resultado) {
+            console.log(data.order.result_object[0]);
+            if (data.order.result_object[0]) {
                 await Swal.fire({
                     title: "El correo registrado ya existe",
                     text: "¿Deseas actualizar tus datos?",
@@ -53,7 +53,6 @@ const Checkout = message => {
                 formData.append('isDuplicated', 0);
             }
             try {
-                console.log(formData);
                 const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
                     method: 'POST',
                     body: formData
