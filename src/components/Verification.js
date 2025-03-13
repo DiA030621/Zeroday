@@ -44,7 +44,7 @@ const Verification = () => {
                     // Si está verificado, navegamos a la página de pago
                     if (mounted.current) {
                         stopPolling();
-                        navigate("/payment", { state: { quantity, orderId } });
+                        navigate("/payment", { state: { quantity, orderId, email } });
                     }
                     return true;
                 }
@@ -67,7 +67,7 @@ const Verification = () => {
             if (verified) {
                 stopPolling();
             }
-        }, 20000); // Verificar cada 20 segundos
+        }, 10000); // Verificar cada 20 segundos
     };
 
     // Función para detener el polling

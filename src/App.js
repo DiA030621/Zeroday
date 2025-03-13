@@ -6,6 +6,7 @@ import Sale from "./pages/Sale";
 import Purchase from "./pages/Purchase";
 import Checkout from "./components/Checkout";
 import Payment from "./components/StripeForm";
+import OrderdDetails from "./components/OrderDetails";
 import Verification from "./components/Verification";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {Elements} from "@stripe/react-stripe-js";
@@ -17,12 +18,12 @@ function App() {
         <Router>
             {/* Contenedor Principal */}
             <div className="app-background">
+                    <Navbar1/>
                 <div className="flex relative z-10">
-                    <Sidebar />
+                    {/*<Sidebar />*/}
                     <div className="w-100">
                         <div className="container  w-100">
                             <Elements stripe={stripePromise}>
-                                <Navbar1/>
                                 <Routes>
                                     <Route path="/" element={<Home />} />
                                     <Route path="/sale" element={<Sale />} />
@@ -30,6 +31,7 @@ function App() {
                                     <Route path="/checkout" element={<Checkout />} />
                                     <Route path="/payment" element={<Payment />} />
                                     <Route path="/verification" element={<Verification />} />
+                                    <Route path="/order-details" element={<OrderdDetails />} />
                                 </Routes>
                             </Elements>
                         </div>

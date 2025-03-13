@@ -9,6 +9,7 @@ const StripeForm = () => {
     const navigate = useNavigate();
     const quantity = location.state?.quantity || 1;
     const orderId = location.state?.orderId || 1;
+    const email = location.state?.email || 1;
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ const StripeForm = () => {
 
         const formData= new FormData();
         formData.append('order_id', orderId);
+        formData.append('email', email);
         try {
             const response = await fetch('http://localhost/zeroday/zeroday/payment', {
                 method: 'POST',
@@ -58,7 +60,7 @@ const StripeForm = () => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row w-50 p-5 rounded-lg" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)" }}>
+            <div className="row w-50 p-5 rounded-lg shadow-lg p-4 bg-transparent border-light rounded-4">
                 <div className="col-md-12">
                     <h2 className="text-center mb-4">Pago con Tarjeta</h2>
                     <div className="mb-3 p-3 border rounded">
@@ -71,7 +73,7 @@ const StripeForm = () => {
                             />
 
                         </div>
-                        <button type="submit" className="btn btn-primary w-100 mt-3" disabled={!stripe || loading}>
+                        <button type="submit" className="w-100 mt-3" disabled={!stripe || loading}>
                             {loading ? "Procesando..." : "Pagar"}
                         </button>
                     </form>

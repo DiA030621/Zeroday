@@ -15,11 +15,11 @@ const Sales = () => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row w-75 p-5 rounded-lg" style={{ backgroundColor: 'rgba(36, 73, 120, 0.8)' }}>
+            <div className="row w-75 p-5 text-center shadow-lg p-4 bg-transparent border-light" >
                 <div className="col-md-6 mb-4 mb-md-0">
-                    <img src="https://www.bleepstatic.com/content/hl-images/2022/05/16/deeper-connect-mini.jpg" alt="Producto" className="w-100 h-auto rounded-md" />
+                    <img src="https://www.bleepstatic.com/content/hl-images/2024/06/10/deeper-connect-air.jpg" alt="Producto" className="w-100 h-auto rounded-md" />
                 </div>
-                <div className="col-md-6 text-light">
+                <div className="col-md-6">
                     <h2 className="text-2xl font-semibold mb-4">Compra</h2>
                     <div className="mb-4">
                         <label htmlFor="quantity" className="form-label">Cantidad</label>
@@ -32,7 +32,7 @@ const Sales = () => {
                             min="1"
                         />
                     </div>
-                    <button onClick={handleContinue} className="btn btn-primary w-100 mt-4">
+                    <button onClick={handleContinue} className="w-100 mt-4">
                         Continuar
                     </button>
                 </div>

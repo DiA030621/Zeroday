@@ -81,7 +81,7 @@ const Checkout = message => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row w-75 p-5 rounded-4 text-light" style={{ backgroundColor: 'rgba(36, 73, 120, 0.8)' }}>
+            <div className="card text-center shadow-lg p-4 bg-transparent border-light">
                 <div className="col-md-12">
                     <h2 className="text-2xl font-semibold mb-4">Detalles de Compra</h2>
                     <p className="mb-3">Cantidad: <strong>{quantity}</strong></p>
@@ -102,7 +102,7 @@ const Checkout = message => {
                             <label className="form-label">Correo Electrónico</label>
                             <input type="email" name="email" className="form-control" onChange={(e) => setEmail(e.target.value)} required />
                         </div>
-                        <button type="submit" className="btn btn-success w-100 mt-3" disabled={loading}>
+                        <button type="submit" className=" w-100 mt-3" disabled={loading}>
                             {loading ? "Cargando..." : "Confirmar Compra"}
                         </button>
                     </form>
