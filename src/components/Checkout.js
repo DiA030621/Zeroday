@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 
-const Checkout = message => {
+const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const quantity = location.state?.quantity || 1;
@@ -11,10 +11,31 @@ const Checkout = message => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Validar correo electrónico
+    const validateEmail = (email) => {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    };
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value;
+        setEmail(value);
+        if (!validateEmail(value)) {
+            setEmailError("Formato de correo no válido");
+        } else {
+            setEmailError("");
+        }
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validateEmail(email)) {
+            setEmailError("Formato de correo no válido");
+            return;
+        }
         setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 2000)); // Simula una espera
         setLoading(false);
@@ -29,11 +50,11 @@ const Checkout = message => {
         formData.append('total_price', total_price);
 
         try {
-            const response = await fetch('http://localhost/zeroday/zeroday/get_email?email='+email, {
+            const response = await fetch(` https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/get_email?email=${email}`, {
                 method: 'get'
             });
             const data = await response.json();
-            console.log(data.order.result_object[0]);
+
             if (data.order.result_object[0]) {
                 await Swal.fire({
                     title: "El correo registrado ya existe",
@@ -43,26 +64,23 @@ const Checkout = message => {
                     confirmButtonText: "Sí, actualizar",
                     cancelButtonText: "Mantener datos anteriores",
                 }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        formData.append('isDuplicated', 1);
-                    } else {
-                        formData.append('isDuplicated', 2);
-                    }
+                    formData.append('isDuplicated', result.isConfirmed ? 1 : 2);
                 });
-            }else{
+            } else {
                 formData.append('isDuplicated', 0);
             }
+
             try {
-                const response = await fetch('http://localhost/zeroday/zeroday/customer_purchase', {
+                const response = await fetch(' https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/customer_purchase', {
                     method: 'POST',
                     body: formData
                 });
 
                 const data1 = await response.json();
                 if (!data1.resultado) {
-                    alert('HOLA');
+                    alert('Error en la compra');
                 } else {
-                    const orderId=data1.orderId
+                    const orderId = data1.orderId;
                     alert(`Orden confirmada con ${quantity} items para ${orderId}`);
                     navigate('/Verification', { state: { quantity, orderId, email } });
                 }
@@ -100,9 +118,10 @@ const Checkout = message => {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Correo Electrónico</label>
-                            <input type="email" name="email" className="form-control" onChange={(e) => setEmail(e.target.value)} required />
+                            <input type="email" name="email" className="form-control" onChange={handleEmailChange} required />
+                            {emailError && <p className="text-danger">{emailError}</p>}
                         </div>
-                        <button type="submit" className=" w-100 mt-3" disabled={loading}>
+                        <button type="submit" className="w-100 mt-3" disabled={loading || emailError}>
                             {loading ? "Cargando..." : "Confirmar Compra"}
                         </button>
                     </form>
