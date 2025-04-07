@@ -44,7 +44,7 @@ const StripeForm = () => {
             if (!data.resultado) {
                 alert(data.mensaje);
             } else {
-                alert(`✅ Pago exitoso`);
+                alert(`✅ Pago exitoso, se ha enviado un correo número de orden`);
                 navigate('/purchase', { state: { quantity, orderId } });
             }
         } catch (error) {
@@ -56,22 +56,24 @@ const StripeForm = () => {
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row w-50 p-5 rounded-lg shadow-lg p-4 bg-transparent border-light rounded-4">
+        <div id="payment-container" className="d-flex justify-content-center align-items-center min-vh-100">
+            <div id="payment-box" className="row p-4 rounded-lg shadow-lg bg-transparent border-light rounded-4">
                 <div className="col-md-12">
-                    <h2 className="text-center mb-4">Pago con Tarjeta</h2>
-                    <div className="mb-3 p-3 border rounded">
+                    <h2 id="payment-title" className="text-center mb-4">Pago con Tarjeta</h2>
+
+                    <div id="payment-summary" className="mb-3 p-3 border rounded">
                         <h4>Detalle de la Venta</h4>
                         <p><strong>Cantidad:</strong> {quantity}</p>
                         <p><strong>Subtotal:</strong> ${subtotal.toFixed(2)}</p>
                         <p><strong>IVA (16%):</strong> ${iva.toFixed(2)}</p>
                         <h3><strong>Total a pagar:</strong> ${totalPrice.toFixed(2)}</h3>
                     </div>
+
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-3 p-3 border rounded">
-                            <CardElement className="form-control p-2" />
+                        <div id="card-element-wrapper" className="mb-3 p-3 border rounded">
+                            <CardElement className="form-control p-2"/>
                         </div>
-                        <button type="submit" className="w-100 mt-3" disabled={!stripe || loading}>
+                        <button id="payment-button" type="submit" className="w-100 mt-3" disabled={!stripe || loading}>
                             {loading ? "Procesando..." : "Pagar"}
                         </button>
                     </form>

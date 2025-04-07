@@ -102,4 +102,80 @@ $blue: #244978;
   background-repeat: no-repeat;
 }
 
+#payment-container {
+  padding: 1rem;
 
+  #payment-box {
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 576px) {
+      padding: 1rem;
+    }
+  }
+
+  #payment-title {
+    font-size: 1.8rem;
+    font-family: "Rubik", sans-serif;
+
+    @media (max-width: 576px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  #payment-summary {
+    font-size: 1rem;
+
+    h4 {
+      font-size: 1.1rem;
+    }
+
+    p, h3 {
+      font-size: 1rem;
+
+      @media (max-width: 576px) {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  #card-element-wrapper {
+    .StripeElement {
+      padding: 0.5rem;
+      font-size: 1rem;
+
+      @media (max-width: 576px) {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  #payment-button {
+    background-color: #254978;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+
+    &:hover {
+      background-color: darken(#254978, 10%);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: 576px) {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+    }
+  }
+}
