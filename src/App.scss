@@ -179,3 +179,186 @@ $blue: #244978;
     }
   }
 }
+$primary-color: #0d6efd;
+$border-color: #ced4da;
+$error-color: #dc3545;
+$success-color: #198754;
+$background-color: #ffffff;
+$box-shadow-color: rgba(0, 0, 0, 0.15);
+
+// Estilos específicos usando IDs para evitar conflictos
+#payment-container {
+  &.d-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-height: 100vh; // Asegurar que no exceda el alto de la ventana
+    overflow-y: auto; // Agregar desplazamiento vertical
+    padding: 2rem 0; // Agregar espacio arriba y abajo para hacer scroll
+
+    @media (max-width: 576px) {
+      padding: 1rem;
+    }
+  }
+}
+
+#payment-box {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 16px $box-shadow-color;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 90vh; // Limitar la altura máxima
+  overflow-y: auto; // Permitir desplazamiento dentro de la caja
+
+  @media (min-width: 576px) {
+    width: 90%;
+  }
+
+  @media (min-width: 768px) {
+    width: 80%;
+  }
+
+  @media (min-width: 992px) {
+    width: 70%;
+  }
+
+  &.bg-transparent {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  &.border-light {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  &.rounded-4 {
+    border-radius: 1rem;
+  }
+}
+
+#payment-title {
+  font-weight: 600;
+  color: $primary-color;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+
+  @media (min-width: 576px) {
+    font-size: 2rem;
+  }
+}
+
+#payment-summary {
+  background-color: rgba($primary-color, 0.05);
+  border-radius: 8px;
+
+  h4 {
+    color: darken($primary-color, 10%);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+
+    &:last-of-type {
+      margin-bottom: 1rem;
+    }
+  }
+
+  h3 {
+    color: darken($primary-color, 15%);
+    font-size: 1.35rem;
+    margin-bottom: 0;
+
+    @media (min-width: 576px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+#card-element-wrapper {
+  border-radius: 8px;
+
+  .form-label {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:focus {
+      border-color: lighten($primary-color, 15%);
+      box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+      outline: 0;
+    }
+
+    &.is-invalid {
+      border-color: $error-color;
+
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba($error-color, 0.25);
+      }
+    }
+
+    &::placeholder {
+      color: lighten($border-color, 10%);
+    }
+  }
+
+  .invalid-feedback {
+    display: block;
+    font-size: 0.875rem;
+    color: $error-color;
+    margin-top: 0.5rem;
+  }
+}
+
+#payment-button {
+  padding: 0.875rem;
+  font-size: 1rem;
+  font-weight: 500;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 1rem; // Agregar espacio después del botón
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($primary-color, 7.5%);
+    }
+
+    &:disabled {
+      background-color: lighten($primary-color, 20%);
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Añadir algunos estilos responsivos para formularios
+.row {
+  @media (max-width: 576px) {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+
+  .col-md-6 {
+    @media (max-width: 768px) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}

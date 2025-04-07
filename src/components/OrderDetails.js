@@ -73,7 +73,6 @@ const OrderDetails = () => {
             try {
                 const response = await fetch("https://zer0d4y.store/zeroday/zeroday/generate_invoice", {
                     method: "POST",
-                    redirect: 'follow',
                     body: formData
                 });
                 const result = await response.json();
@@ -107,7 +106,7 @@ const OrderDetails = () => {
                         <p><strong>Cliente:</strong> {orderData.customer_name}</p>
                         <p><strong>Email:</strong> {orderData.customer_email}</p>
                         <p><strong>Teléfono:</strong> {orderData.customer_phone}</p>
-                        <p><strong>Monto Pagado:</strong> ${orderData.amount * 300}</p>
+                        <p><strong>Monto Pagado:</strong> ${orderData.amount * 1000}</p>
                         <p><strong>Cantidad comprada:</strong> {parseInt(cantidad)}</p>
                         <p><strong>Estado de Pago:</strong> {orderData.payment_status}</p>
                         <button className="btn btn-primary mt-3" onClick={handleGenerateInvoice}>

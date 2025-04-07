@@ -40,7 +40,7 @@ const Checkout = () => {
         await new Promise(resolve => setTimeout(resolve, 2000)); // Simula una espera
         setLoading(false);
 
-        const total_price = quantity * 300;
+        const total_price = quantity * 1000;
         const formData= new FormData();
         formData.append('name', name);
         formData.append('phone', phone);
