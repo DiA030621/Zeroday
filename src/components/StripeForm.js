@@ -34,8 +34,9 @@ const StripeForm = () => {
         formData.append('order_id', orderId);
         formData.append('email', email);
         try {
-            const response = await fetch(' https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/payment', {
+            const response = await fetch('https://zer0d4y.store/zeroday/zeroday/payment', {
                 method: 'POST',
+                redirect: 'follow',
                 body: formData
             });
 

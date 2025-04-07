@@ -50,7 +50,8 @@ const Checkout = () => {
         formData.append('total_price', total_price);
 
         try {
-            const response = await fetch(` https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/get_email?email=${email}`, {
+            const response = await fetch(`https://zer0d4y.store/zeroday/zeroday/get_email?email=${email}`, {
+                redirect: 'follow',
                 method: 'get'
             });
             const data = await response.json();
@@ -71,13 +72,16 @@ const Checkout = () => {
             }
 
             try {
-                const response = await fetch(' https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/customer_purchase', {
+                console.log('aaaa')
+                const response = await fetch('https://zer0d4y.store/zeroday/zeroday/customer_purchase', {
                     method: 'POST',
+                    redirect: 'follow',
                     body: formData
                 });
 
                 const data1 = await response.json();
                 if (!data1.resultado) {
+                    console.log('data1.resultado')
                     alert('Error en la compra');
                 } else {
                     const orderId = data1.orderId;

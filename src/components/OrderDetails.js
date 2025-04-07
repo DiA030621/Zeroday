@@ -13,7 +13,9 @@ const OrderDetails = () => {
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
-                const response = await fetch(` https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/get_order?order_id=${orderId}`);
+                const response = await fetch(`https://zer0d4y.store/zeroday/zeroday/get_order?order_id=${orderId}`, {
+                    redirect: 'follow'
+                });
                 const data = await response.json();
 
                 if (data.resultado) {
@@ -69,9 +71,10 @@ const OrderDetails = () => {
             formData.append("customer_rfc", formValues.rfc);
             formData.append("amount", orderData.amount);
             try {
-                const response = await fetch(" https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/generate_invoice", {
+                const response = await fetch("https://zer0d4y.store/zeroday/zeroday/generate_invoice", {
                     method: "POST",
-                    body: formData,
+                    redirect: 'follow',
+                    body: formData
                 });
                 const result = await response.json();
                 console.log(result);

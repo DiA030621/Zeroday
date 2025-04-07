@@ -19,7 +19,8 @@ const Verification = () => {
         try {
             const formData = new FormData();
             formData.append("email", email);
-            await fetch(" https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/send_verification_email", {
+            await fetch("https://zer0d4y.store/zeroday/zeroday/send_verification_email", {
+                redirect: 'follow',
                 method: "POST",
                 body: formData
             });
@@ -34,7 +35,9 @@ const Verification = () => {
         if (!mounted.current) return;
 
         try {
-            const response = await fetch(` https://snapper-finer-boa.ngrok-free.app/zeroday/zeroday/get_email?email=${email}`);
+            const response = await fetch(`https://zer0d4y.store/zeroday/zeroday/get_email?email=${email}`, {
+                redirect: 'follow'
+            });
             const data = await response.json();
 
             if (data.order && data.order.result_object && data.order.result_object.length > 0) {
